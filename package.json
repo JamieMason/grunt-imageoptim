@@ -39,6 +39,20 @@
     "grunt": "~0.4.1"
   },
   "keywords": [
-    "gruntplugin"
+    "advpng",
+    "build",
+    "compress",
+    "compression",
+    "gifsicle",
+    "gruntplugin",
+    "ImageOptim",
+    "images",
+    "jpegoptim",
+    "jpegtran",
+    "optimization",
+    "optimize",
+    "optipng",
+    "pngcrush",
+    "pngout"
   ]
 }
