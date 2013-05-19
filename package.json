@@ -1,0 +1,43 @@
+{
+  "name": "grunt-imageoptim",
+  "description": "Make ImageOptim.app part of your automated build processs",
+  "version": "0.1.0",
+  "homepage": "https://github.com/JamieMason/grunt-imageoptim",
+  "author": {
+    "name": "Jamie Mason @GotNoSugarBaby",
+    "email": "siunmaru@gmail.com",
+    "url": "https://github.com/JamieMason"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:JamieMason/grunt-imageoptim.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JamieMason/grunt-imageoptim/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/JamieMason/grunt-imageoptim/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.1.2",
+    "grunt": "~0.4.1"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.1"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
