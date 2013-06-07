@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 
       grunt.log.writeln('Processing "' + dir + '"');
 
-      imageOptim = exec('imageOptim -da ' + dir, function(error, stdout, stderr) {
+      imageOptim = exec('imageOptim -daq ' + dir, function(error, stdout, stderr) {
         if (error !== null) {
           done(error);
         }
