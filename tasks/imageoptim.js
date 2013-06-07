@@ -34,7 +34,7 @@ module.exports = function(grunt) {
       var imageAlpha = options.imageAlpha ? " -a" : "";
       var quitAfter = options.quitAfter ? " -q" : "";
 
-      imageOptim = exec('imageOptim -daq ' + dir + imageAlpha + quitAfter, function(error, stdout, stderr) {
+      imageOptim = exec('imageOptim -d ' + dir + imageAlpha + quitAfter, function(error, stdout, stderr) {
         if (error !== null) {
           done(error);
         }
