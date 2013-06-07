@@ -39,6 +39,22 @@ grunt.initConfig({
 })
 ```
 
+### Options
+In your project's Gruntfile, you can add two additional options. `imageAlpha` and `quitAfter`. `imageAlpha` runs your images through the ImageAlpha.app before passing it off to ImageOptim.app. `quitAfter` quits all apps after optimization.
+
+```js
+imageoptim: {
+    files: [
+    	'path/to/img/dir',
+    	'path/to/some/other/img/dir'
+    ],
+    options: {
+      imageAlpha: true
+      quitAfter: true
+    }
+  }
+```
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
