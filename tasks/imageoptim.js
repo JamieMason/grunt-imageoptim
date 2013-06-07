@@ -13,6 +13,10 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('imageoptim', 'Losslessly compress images from the command line', function() {
 
     var directories = this.filesSrc;
+    var options = this.options({
+      imageAlpha: false,
+      quitAfter: false
+    });
     var done = this.async();
     var exec = require('child_process').exec;
     var complete = 0;
@@ -26,8 +30,11 @@ module.exports = function(grunt) {
       var imageOptim;
 
       grunt.log.writeln('Processing "' + dir + '"');
+      
+      var imageAlpha = options.imageAlpha ? " -a" : "";
+      var quitAfter = options.quitAfter ? " -q" : "";
 
-      imageOptim = exec('imageOptim -daq ' + dir, function(error, stdout, stderr) {
+      imageOptim = exec('imageOptim -daq ' + dir + imageAlpha + quitAfter, function(error, stdout, stderr) {
         if (error !== null) {
           done(error);
         }
