@@ -12,14 +12,14 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('imageoptim', 'Losslessly compress images from the command line', function() {
 
+    var complete = 0;
     var directories = this.filesSrc;
+    var done = this.async();
+    var exec = require('child_process').exec;
     var options = this.options({
       imageAlpha: false,
       quitAfter: false
     });
-    var done = this.async();
-    var exec = require('child_process').exec;
-    var complete = 0;
 
     if (!directories.length) {
       grunt.fail.fatal('No valid directories were supplied for processing', 1);
@@ -27,14 +27,24 @@ module.exports = function(grunt) {
 
     directories.forEach(function(dir) {
 
+      var command;
       var imageOptim;
+      var imageAlpha = options.imageAlpha;
+      var quitAfter = options.quitAfter;
+
+      if (quitAfter && imageAlpha) {
+        command = 'imageOptim --quit --image-alpha --directory ';
+      } else if (!quitAfter && imageAlpha) {
+        command = 'imageOptim --image-alpha --directory ';
+      } else if (quitAfter && !imageAlpha) {
+        command = 'imageOptim --quit --directory ';
+      } else {
+        command = 'imageOptim --directory ';
+      }
 
       grunt.log.writeln('Processing "' + dir + '"');
-      
-      var imageAlpha = options.imageAlpha ? " -a" : "";
-      var quitAfter = options.quitAfter ? " -q" : "";
 
-      imageOptim = exec('imageOptim -d ' + dir + imageAlpha + quitAfter, function(error, stdout, stderr) {
+      imageOptim = exec(command + dir, function(error, stdout, stderr) {
         if (error !== null) {
           done(error);
         }
