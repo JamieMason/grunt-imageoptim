@@ -21,6 +21,13 @@ module.exports = function(grunt) {
       quitAfter: false
     });
 
+    // only log stdout if it contains non whitespace characters
+    function filterEmptyLog (message) {
+      if (message && String(message).search(/\S/) === -1) {
+        grunt.log.writeln(message);
+      }
+    }
+
     if (!directories.length) {
       grunt.fail.fatal('No valid directories were supplied for processing', 1);
     }
@@ -48,12 +55,8 @@ module.exports = function(grunt) {
         if (error !== null) {
           done(error);
         }
-        if (stdout) {
-          console.log(stdout);
-        }
-        if (stderr) {
-          console.log(stderr);
-        }
+        filterEmptyLog(stdout);
+        filterEmptyLog(stderr);
       });
 
       imageOptim.on('exit', function(code) {
