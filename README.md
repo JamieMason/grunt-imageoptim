@@ -1,15 +1,12 @@
 # grunt-imageoptim
 
-> Make ImageOptim.app part of your automated build processs
+A Grunt task to control [ImageOptim](http://imageoptim.com) and [ImageAlpha](http://pngmini.com) so lossless optimisation of images can be part of your automated build process.
+
+Version 1.4 will soon also bring support for automating [JPEGmini for Mac](http://jpegmini.com/mac).
 
 ## Getting Started
-This plugin requires Grunt `~0.4.1` and [ImageOptim-CLI](https://github.com/JamieMason/ImageOptim-CLI).
 
-ImageOptim-CLI can be installed with this command;
-
-```shell
-sudo npm install -g imageoptim-cli
-```
+This plugin requires [Grunt](http://gruntjs.com/) `~0.4.1` and [ImageOptim-CLI](https://github.com/JamieMason/ImageOptim-CLI) `~0.3.2`.
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
@@ -23,38 +20,19 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-imageoptim');
 ```
 
-## The "imageoptim" task
-
-### Overview
-In your project's Gruntfile, add a section named `imageoptim` to the data object passed into `grunt.initConfig()`.
-
-```js
-grunt.initConfig({
-  imageoptim: {
-    files: [
-    	'path/to/img/dir',
-    	'path/to/some/other/img/dir'
-    ],
-  },
-})
-```
-
-### Options
-In your project's Gruntfile, you can add two additional options. `imageAlpha` and `quitAfter`. `imageAlpha` runs your images through the ImageAlpha.app before passing it off to ImageOptim.app. `quitAfter` quits all apps after optimization.
+## Example Gruntfile
 
 ```js
 imageoptim: {
-    files: [
-    	'path/to/img/dir',
-    	'path/to/some/other/img/dir'
-    ],
-    options: {
-      imageAlpha: true
-      quitAfter: true
-    }
+  files: [
+    'path/to/img/dir',
+    'path/to/some/other/img/dir'
+  ],
+  options: {
+    // also run images through ImageAlpha.app before ImageOptim.app
+    imageAlpha: true,
+    // quit all apps after optimisation
+    quitAfter: true
   }
+}
 ```
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
