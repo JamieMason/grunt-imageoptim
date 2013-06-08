@@ -1,7 +1,7 @@
 {
   "name": "grunt-imageoptim",
-  "description": "Make ImageOptim.app part of your automated build process",
-  "version": "0.1.1",
+  "description": "Make ImageOptim and ImageAlpha part of your automated build process",
+  "version": "1.0.0",
   "homepage": "https://github.com/JamieMason/grunt-imageoptim",
   "author": {
     "name": "Jamie Mason @GotNoSugarBaby",
