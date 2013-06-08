@@ -24,7 +24,11 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     imageoptim: {
-      files: []
+      files: [],
+      options: {
+        imageAlpha: false,
+        quitAfter: true
+      }
     },
 
     // Unit tests.
