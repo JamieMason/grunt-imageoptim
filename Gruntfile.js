@@ -26,8 +26,9 @@ module.exports = function(grunt) {
     imageoptim: {
       files: [],
       options: {
+        jpegMini: false,
         imageAlpha: false,
-        quitAfter: true
+        quitAfter: false
       }
     },
 
