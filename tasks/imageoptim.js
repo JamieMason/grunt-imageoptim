@@ -31,7 +31,7 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('imageoptim', 'Losslessly compress images from the command line', function() {
 
     var path = require('path');
-    var localImageOptim = path.resolve(__dirname, '../../imageoptim-cli/bin');
+    var localImageOptim = path.resolve(__dirname, '../node_modules/imageoptim-cli/bin');
     var terminalCommand = [];
     var complete = 0;
     var directories = this.filesSrc;
