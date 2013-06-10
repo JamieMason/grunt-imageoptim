@@ -1,7 +1,7 @@
 {
   "name": "grunt-imageoptim",
   "description": "Make ImageOptim and ImageAlpha part of your automated build process",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "homepage": "https://github.com/JamieMason/grunt-imageoptim",
   "author": {
     "name": "Jamie Mason @GotNoSugarBaby",
@@ -15,8 +15,7 @@
   "bugs": {
     "url": "https://github.com/JamieMason/grunt-imageoptim/issues"
   },
-  "licenses": [
-    {
+  "licenses": [{
       "type": "MIT",
       "url": "https://github.com/JamieMason/grunt-imageoptim/blob/master/LICENSE-MIT"
     }
@@ -39,21 +38,21 @@
     "grunt": "~0.4.1"
   },
   "keywords": [
-    "advpng",
-    "build",
-    "compress",
-    "compression",
-    "gifsicle",
-    "gruntplugin",
-    "ImageOptim",
-    "images",
-    "JPEGmini",
-    "jpegoptim",
-    "jpegtran",
-    "optimization",
-    "optimize",
-    "optipng",
-    "pngcrush",
-    "pngout"
+      "advpng",
+      "build",
+      "compress",
+      "compression",
+      "gifsicle",
+      "gruntplugin",
+      "ImageOptim",
+      "images",
+      "JPEGmini",
+      "jpegoptim",
+      "jpegtran",
+      "optimization",
+      "optimize",
+      "optipng",
+      "pngcrush",
+      "pngout"
   ]
 }

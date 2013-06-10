@@ -10,10 +10,6 @@
 
 module.exports = function(grunt) {
 
-  var path = require('path');
-  var pluginRoot = path.resolve(__dirname, '../');
-  var localImageOptim = path.resolve(pluginRoot, 'node_modules/imageoptim-cli');
-
   function logMessage(message, isError) {
 
     // quit if message is empty or only contains whitespace
@@ -34,6 +30,8 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('imageoptim', 'Losslessly compress images from the command line', function() {
 
+    var path = require('path');
+    var localImageOptim = path.resolve(__dirname, '../../imageoptim-cli/bin');
     var terminalCommand = [];
     var complete = 0;
     var directories = this.filesSrc;
