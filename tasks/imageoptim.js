@@ -10,6 +10,10 @@
 
 module.exports = function(grunt) {
 
+  var path = require('path');
+  var pluginRoot = path.resolve(__dirname, '../');
+  var localImageOptim = path.resolve(pluginRoot, 'node_modules/imageoptim-cli');
+
   function logMessage (message, isError) {
 
     // quit if message is empty or only contains whitespace
@@ -41,13 +45,13 @@ module.exports = function(grunt) {
     });
 
     if (options.quitAfter && options.imageAlpha) {
-      terminalCommand = 'imageOptim --quit --image-alpha --directory ';
+      terminalCommand = './imageOptim --quit --image-alpha --directory ';
     } else if (!options.quitAfter && options.imageAlpha) {
-      terminalCommand = 'imageOptim --image-alpha --directory ';
+      terminalCommand = './imageOptim --image-alpha --directory ';
     } else if (options.quitAfter && !options.imageAlpha) {
-      terminalCommand = 'imageOptim --quit --directory ';
+      terminalCommand = './imageOptim --quit --directory ';
     } else {
-      terminalCommand = 'imageOptim --directory ';
+      terminalCommand = './imageOptim --directory ';
     }
 
     if (!directories.length) {
@@ -60,7 +64,9 @@ module.exports = function(grunt) {
 
       grunt.log.writeln('Processing "' + imgPath + '"');
 
-      imageOptim = exec(terminalCommand + imgPath, function(error, stdout) {
+      imageOptim = exec(terminalCommand + imgPath, {
+        cwd: localImageOptim
+      }, function(error, stdout) {
         if (error !== null) {
           logMessage(stdout, true);
           done(error);
