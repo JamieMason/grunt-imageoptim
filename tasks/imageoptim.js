@@ -14,7 +14,7 @@ module.exports = function(grunt) {
   var pluginRoot = path.resolve(__dirname, '../');
   var localImageOptim = path.resolve(pluginRoot, 'node_modules/imageoptim-cli');
 
-  function logMessage (message, isError) {
+  function logMessage(message, isError) {
 
     // quit if message is empty or only contains whitespace
     if (!message || String(message).search(/\S/) === -1) {
@@ -34,25 +34,30 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('imageoptim', 'Losslessly compress images from the command line', function() {
 
-    var terminalCommand;
+    var terminalCommand = [];
     var complete = 0;
     var directories = this.filesSrc;
     var done = this.async();
     var exec = require('child_process').exec;
     var options = this.options({
+      jpegMini: false,
       imageAlpha: false,
       quitAfter: false
     });
 
-    if (options.quitAfter && options.imageAlpha) {
-      terminalCommand = './imageOptim --quit --image-alpha --directory ';
-    } else if (!options.quitAfter && options.imageAlpha) {
-      terminalCommand = './imageOptim --image-alpha --directory ';
-    } else if (options.quitAfter && !options.imageAlpha) {
-      terminalCommand = './imageOptim --quit --directory ';
-    } else {
-      terminalCommand = './imageOptim --directory ';
+    terminalCommand.push('./imageOptim');
+
+    if (options.quitAfter) {
+      terminalCommand.push('--quit');
     }
+    if (options.imageAlpha) {
+      terminalCommand.push('--image-alpha');
+    }
+    if (options.jpegMini) {
+      terminalCommand.push('--jpeg-mini');
+    }
+
+    terminalCommand.push('--directory');
 
     if (!directories.length) {
       grunt.fail.fatal('No valid directories were supplied for processing', 1);
@@ -61,10 +66,11 @@ module.exports = function(grunt) {
     directories.forEach(function(imgPath) {
 
       var imageOptim;
+      var execCommand = terminalCommand.concat(imgPath).join(' ');
 
       grunt.log.writeln('Processing "' + imgPath + '"');
 
-      imageOptim = exec(terminalCommand + imgPath, {
+      imageOptim = exec(execCommand, {
         cwd: localImageOptim
       }, function(error, stdout) {
         if (error !== null) {
