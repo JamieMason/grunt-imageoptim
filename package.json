@@ -1,7 +1,7 @@
 {
   "name": "grunt-imageoptim",
   "description": "Make ImageOptim and ImageAlpha part of your automated build process",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://github.com/JamieMason/grunt-imageoptim",
   "author": {
     "name": "Jamie Mason @GotNoSugarBaby",
@@ -47,6 +47,7 @@
     "gruntplugin",
     "ImageOptim",
     "images",
+    "JPEGmini",
     "jpegoptim",
     "jpegtran",
     "optimization",
