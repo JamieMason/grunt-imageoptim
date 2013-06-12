@@ -64,7 +64,8 @@ module.exports = function(grunt) {
     directories.forEach(function(imgPath) {
 
       var imageOptim;
-      var execCommand = terminalCommand.concat(imgPath).join(' ');
+      var fullPath = path.resolve(imgPath).replace(/\s/g,'\\ ');
+      var execCommand = terminalCommand.concat(fullPath).join(' ');
 
       grunt.log.writeln('Processing "' + imgPath + '"');
 
