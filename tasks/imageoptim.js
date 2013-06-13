@@ -1,53 +1,33 @@
 /*
  * grunt-imageoptim
  * https://github.com/JamieMason/grunt-imageoptim
+ * Copyright © 2013 Jamie Mason, @GotNoSugarBaby,
+ * https://github.com/JamieMason
  *
- * Copyright (c) 2013 Jamie Mason @GotNoSugarBaby
- * Licensed under the MIT license.
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files
+ * (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
-
-'use strict';
 
 module.exports = function(grunt) {
 
-  function logMessage(message, isError) {
-
-    // quit if message is empty or only contains whitespace
-    if (!message || String(message).search(/\S/) === -1) {
-      return;
-    }
-
-    // remove trailing new lines
-    message = message.replace(/\n$/, '');
-
-    if (isError) {
-      grunt.fail.fatal(message);
-    } else {
-      grunt.log.writeln(message);
-    }
-
-  }
-
-  function getTerminalCommand(options) {
-
-    var command = ['./imageOptim'];
-
-    if (options.quitAfter) {
-      command.push('--quit');
-    }
-
-    if (options.imageAlpha) {
-      command.push('--image-alpha');
-    }
-
-    if (options.jpegMini) {
-      command.push('--jpeg-mini');
-    }
-
-    command.push('--directory');
-
-    return command.join(' ');
-  }
+  'use strict';
 
   grunt.registerMultiTask('imageoptim', 'Losslessly compress images from the command line', function() {
 
