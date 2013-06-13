@@ -35,6 +35,10 @@ module.exports = function(grunt) {
     var toAbsolutePath = require('path').resolve;
     var onTaskComplete = this.async();
 
+    var dirs = this.filesSrc;
+    var dirsTotal = dirs.length;
+    var dirsProcessed = 0;
+
     // locate the ImageOptim-CLI executable we have set as a local npm dependency
     var imageOptimCliPath = toAbsolutePath(__dirname, '../node_modules/imageoptim-cli/bin');
 
@@ -45,11 +49,64 @@ module.exports = function(grunt) {
     });
 
     // based on the options, build up the ImageOptim-CLI Terminal command
-    var terminalCommand = getTerminalCommand(options);
+    var terminalCommand = (function(options) {
+      var command = './imageOptim';
+      if (options.quitAfter) { command += ' --quit'; }
+      if (options.imageAlpha) { command += ' --image-alpha'; }
+      if (options.jpegMini) { command += ' --jpeg-mini'; }
+      return command + ' --directory';
+    }(options));
 
-    var dirs = this.filesSrc;
-    var dirsTotal = dirs.length;
-    var dirsProcessed = 0;
+    var tplOnFile = '';
+
+    tplOnFile += 'Psssst! ImageOptim-CLI uses folders. Pass the folder containing "{{fullPath}}" ';
+    tplOnFile += 'instead and we should be good to go.';
+
+    /**
+     * A logging wrapper mainly to exclude stdout's we're getting which only contain whitespace
+     * @param  {String}  message
+     * @param  {Boolean} isError
+     */
+    function logMessage(message, isError) {
+
+      // quit if message is empty or only contains whitespace
+      if (!message || String(message).search(/\S/) === -1) {
+        return;
+      }
+
+      // remove trailing new lines
+      message = message.replace(/\n$/, '');
+
+      if (isError) {
+        grunt.fail.fatal(message);
+      } else {
+        grunt.log.writeln(message);
+      }
+    }
+
+    /**
+     * Handle stdout from ImageOptim-CLI
+     * @param  {Object|Null} error
+     * @param  {String} stdout
+     */
+    function onTerminalOutput(error, stdout) {
+      if (error !== null) {
+        logMessage(stdout, true);
+        onTaskComplete(error);
+      } else {
+        logMessage(stdout);
+      }
+    }
+
+    /**
+     * Called after we've finished processing each directory
+     * @param  {String} code
+     */
+    function onTerminalExit(code) {
+      if (++dirsProcessed === dirsTotal) {
+        onTaskComplete(code);
+      }
+    }
 
     // if none of the glob patterns matched anything we've nothing to do
     if (!dirsTotal) {
@@ -68,34 +125,23 @@ module.exports = function(grunt) {
       var escapedFullPath = fullPath.replace(/\s/g, '\\ ');
 
       // apply the base ImageOptim-CLI command to this folder
-      var execCommand = terminalCommand + ' ' + escapedFullPath;
+      var execImageOptim = terminalCommand + ' ' + escapedFullPath;
 
       // update on progress
       grunt.log.writeln('Processing "' + fullPath + '"');
 
       // quit if the glob pattern matched anything other than folders
       if (!grunt.file.isDir(fullPath)) {
-        grunt.fail.fatal('The path "' + fullPath + '" is not a directory', 1);
+        grunt.fail.fatal(tplOnFile.replace('{{fullPath}}', fullPath), 1);
       }
 
       // run ImageOptim-CLI with the current working directory set to ImageOptim-CLI's bin folder
-      imageOptim = runTerminal(execCommand, {
+      imageOptim = runTerminal(execImageOptim, {
         cwd: imageOptimCliPath
-      }, function(error, stdout) {
-        if (error !== null) {
-          logMessage(stdout, true);
-          onTaskComplete(error);
-        } else {
-          logMessage(stdout);
-        }
-      });
+      }, onTerminalOutput);
 
       // After we've processed the last folder we can quit
-      imageOptim.on('exit', function(code) {
-        if (++dirsProcessed === dirsTotal) {
-          onTaskComplete(code);
-        }
-      });
+      imageOptim.on('exit', onTerminalExit);
 
     });
 
