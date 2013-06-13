@@ -56,5 +56,10 @@
       "optipng",
       "pngcrush",
       "pngout"
+  ],
+  "contributors": [
+    "Jamie Mason (https://github.com/JamieMason)",
+    "David Bushell (https://github.com/dbushell)",
+    "Adam Simpson ((https://github.com/asimpson)"
   ]
 }
