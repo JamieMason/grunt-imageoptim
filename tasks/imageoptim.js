@@ -28,61 +28,92 @@ module.exports = function(grunt) {
 
   }
 
+  function getTerminalCommand(options) {
+
+    var command = ['./imageOptim'];
+
+    if (options.quitAfter) {
+      command.push('--quit');
+    }
+
+    if (options.imageAlpha) {
+      command.push('--image-alpha');
+    }
+
+    if (options.jpegMini) {
+      command.push('--jpeg-mini');
+    }
+
+    command.push('--directory');
+
+    return command.join(' ');
+  }
+
   grunt.registerMultiTask('imageoptim', 'Losslessly compress images from the command line', function() {
 
-    var path = require('path');
-    var localImageOptim = path.resolve(__dirname, '../node_modules/imageoptim-cli/bin');
-    var terminalCommand = [];
-    var complete = 0;
-    var directories = this.filesSrc;
-    var done = this.async();
-    var exec = require('child_process').exec;
+    var runTerminal = require('child_process').exec;
+    var toAbsolutePath = require('path').resolve;
+    var onTaskComplete = this.async();
+
+    // locate the ImageOptim-CLI executable we have set as a local npm dependency
+    var imageOptimCliPath = toAbsolutePath(__dirname, '../node_modules/imageoptim-cli/bin');
+
     var options = this.options({
       jpegMini: false,
       imageAlpha: false,
       quitAfter: false
     });
 
-    terminalCommand.push('./imageOptim');
+    // based on the options, build up the ImageOptim-CLI Terminal command
+    var terminalCommand = getTerminalCommand(options);
 
-    if (options.quitAfter) {
-      terminalCommand.push('--quit');
-    }
-    if (options.imageAlpha) {
-      terminalCommand.push('--image-alpha');
-    }
-    if (options.jpegMini) {
-      terminalCommand.push('--jpeg-mini');
-    }
+    var dirs = this.filesSrc;
+    var dirsTotal = dirs.length;
+    var dirsProcessed = 0;
 
-    terminalCommand.push('--directory');
-
-    if (!directories.length) {
+    // if none of the glob patterns matched anything we've nothing to do
+    if (!dirsTotal) {
       grunt.fail.fatal('No valid directories were supplied for processing', 1);
     }
 
-    directories.forEach(function(imgPath) {
+    dirs.forEach(function(imgPath) {
 
+      // a reference to the ImageOptim-CLI process running in the terminal
       var imageOptim;
-      var fullPath = path.resolve(imgPath).replace(/\s/g,'\\ ');
-      var execCommand = terminalCommand.concat(fullPath).join(' ');
 
-      grunt.log.writeln('Processing "' + imgPath + '"');
+      // an absolute path to this folder
+      var fullPath = toAbsolutePath(imgPath);
 
-      imageOptim = exec(execCommand, {
-        cwd: localImageOptim
+      // the absolute path with whitespace escaped for the terminal
+      var escapedFullPath = fullPath.replace(/\s/g, '\\ ');
+
+      // apply the base ImageOptim-CLI command to this folder
+      var execCommand = terminalCommand + ' ' + escapedFullPath;
+
+      // update on progress
+      grunt.log.writeln('Processing "' + fullPath + '"');
+
+      // quit if the glob pattern matched anything other than folders
+      if (!grunt.file.isDir(fullPath)) {
+        grunt.fail.fatal('The path "' + fullPath + '" is not a directory', 1);
+      }
+
+      // run ImageOptim-CLI with the current working directory set to ImageOptim-CLI's bin folder
+      imageOptim = runTerminal(execCommand, {
+        cwd: imageOptimCliPath
       }, function(error, stdout) {
         if (error !== null) {
           logMessage(stdout, true);
-          done(error);
+          onTaskComplete(error);
         } else {
           logMessage(stdout);
         }
       });
 
+      // After we've processed the last folder we can quit
       imageOptim.on('exit', function(code) {
-        if (++complete === directories.length) {
-          done(code);
+        if (++dirsProcessed === dirsTotal) {
+          onTaskComplete(code);
         }
       });
 
