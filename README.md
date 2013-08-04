@@ -1,38 +1,31 @@
 # grunt-imageoptim
 
-A Grunt task to control [ImageOptim](http://imageoptim.com), [ImageAlpha](http://pngmini.com) and [JPEGmini for Mac](http://jpegmini.com/mac) so lossless optimisation of images can be part of your automated build process.
+The companion [Grunt](http://gruntjs.com/) plugin for [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/), which automates batch optimisation of images with [ImageOptim](http://imageoptim.com), [ImageAlpha](http://pngmini.com) and [JPEGmini for Mac](http://jpegmini.com/mac).
 
-## Getting Started
+## Installation
 
-This plugin requires [Grunt](http://gruntjs.com/) `~0.4.1` and installs [ImageOptim-CLI](https://github.com/JamieMason/ImageOptim-CLI) `~1.4.1` locally.
-
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
+From the root of your project, run
 
 ```shell
 npm install grunt-imageoptim --save-dev
 ```
 
-Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
+## Example Gruntfile.js
+
+In future versions we plan to fully support Grunt's file pattern matching. Until then only processing of directories is supported (as opposed to arbitrary collections of files).
 
 ```js
-grunt.loadNpmTasks('grunt-imageoptim');
-```
-
-## Example Gruntfile
-
-```js
-imageoptim: {
-  files: [
-    'path/to/img/dir',
-    'path/to/some/other/img/dir'
-  ],
-  options: {
-    // also run images through ImageAlpha.app before ImageOptim.app
-    imageAlpha: true,
-    // also run images through JPEGmini.app after ImageOptim.app
-    jpegMini: true,
-    // quit all apps after optimisation
-    quitAfter: true
-  }
-}
+module.exports = function(grunt) {
+  grunt.initConfig({
+    imageoptim: {
+      files: ['public/image-directory'],
+      options: {
+        jpegMini: false,
+        imageAlpha: false,
+        quitAfter: false
+      }
+    }
+  });
+  grunt.loadNpmTasks('grunt-imageoptim');
+};
 ```
