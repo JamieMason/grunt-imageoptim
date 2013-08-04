@@ -1,7 +1,7 @@
 {
   "name": "grunt-imageoptim",
   "description": "Make ImageOptim and ImageAlpha part of your automated build process",
-  "version": "1.2.6",
+  "version": "1.2.5",
   "homepage": "https://github.com/JamieMason/grunt-imageoptim",
   "author": {
     "name": "Jamie Mason @GotNoSugarBaby",
@@ -28,7 +28,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "imageoptim-cli": ">=1.4.1"
+    "imageoptim-cli": "1.6.18"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.1.1",

@@ -22,7 +22,6 @@ grunt.loadNpmTasks('grunt-imageoptim');
 
 ```js
 imageoptim: {
-  // these paths should match directories
   files: [
     'path/to/img/dir',
     'path/to/some/other/img/dir'
