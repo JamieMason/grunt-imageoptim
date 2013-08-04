@@ -1,8 +1,9 @@
 {
   "name": "grunt-imageoptim",
   "description": "Make ImageOptim and ImageAlpha part of your automated build process",
-  "version": "1.2.5",
   "homepage": "https://github.com/JamieMason/grunt-imageoptim",
+  "version": "1.2.6",
+  "main": "Gruntfile.js",
   "author": {
     "name": "Jamie Mason @GotNoSugarBaby",
     "email": "siunmaru@gmail.com",
@@ -16,46 +17,38 @@
     "url": "https://github.com/JamieMason/grunt-imageoptim/issues"
   },
   "licenses": [{
-      "type": "MIT",
-      "url": "https://github.com/JamieMason/grunt-imageoptim/blob/master/LICENSE-MIT"
-    }
-  ],
-  "main": "Gruntfile.js",
+    "type": "MIT",
+    "url": "https://github.com/JamieMason/grunt-imageoptim/blob/master/LICENSE-MIT"
+  }],
   "engines": {
     "node": ">= 0.8.0"
-  },
-  "scripts": {
-    "test": "grunt test"
   },
   "dependencies": {
     "imageoptim-cli": "1.6.18"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.1.1",
-    "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-nodeunit": "~0.1.2",
     "grunt": "~0.4.1"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
   },
   "keywords": [
-      "advpng",
-      "build",
-      "compress",
-      "compression",
-      "gifsicle",
-      "gruntplugin",
-      "ImageOptim",
-      "images",
-      "JPEGmini",
-      "jpegoptim",
-      "jpegtran",
-      "optimization",
-      "optimize",
-      "optipng",
-      "pngcrush",
-      "pngout"
+    "advpng",
+    "build",
+    "compress",
+    "compression",
+    "gifsicle",
+    "gruntplugin",
+    "ImageOptim",
+    "images",
+    "JPEGmini",
+    "jpegoptim",
+    "jpegtran",
+    "optimization",
+    "optimize",
+    "optipng",
+    "pngcrush",
+    "pngout"
   ],
   "contributors": [
     "Jamie Mason (https://github.com/JamieMason)",
