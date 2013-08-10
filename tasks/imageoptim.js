@@ -54,7 +54,10 @@ module.exports = function(grunt) {
       done: this.async(),
       commands: [],
       directories: this.data,
-      bin: path.resolve(__dirname, '../node_modules/imageoptim-cli/bin'),
+      bin: [
+        path.resolve(__dirname, '../node_modules/imageoptim-cli/bin'),
+        path.resolve(__dirname, '../../imageoptim-cli/bin')
+      ],
       exec: q.denodeify(require('child_process').exec),
       options: this.options({
         jpegMini: false,
@@ -116,15 +119,23 @@ module.exports = function(grunt) {
     // ensure the ImageOptim-CLI binary is accessible
 
     .then(function(config) {
-      return fileExists(config.bin)
+      return fileExists(config.bin[0])
         .then(function() {
+          config.bin = config.bin[0];
           return config;
         })
         .fail(function() {
-          var error = '';
-          error += 'Unable to locate ImageOptim-CLI in "' + config.bin + '".\n';
-          error += 'Please raise issue: https://github.com/JamieMason/grunt-imageoptim/issues/new.';
-          throw new Error(error);
+          return fileExists(config.bin[1])
+            .then(function() {
+              config.bin = config.bin[1];
+              return config;
+            })
+            .fail(function() {
+              var error = '';
+              error += 'Unable to locate ImageOptim-CLI in "' + config.bin[0] + '" or "' + config.bin[1] + '".\n';
+              error += 'Please raise issue: https://github.com/JamieMason/grunt-imageoptim/issues/new.';
+              throw new Error(error);
+            });
         });
     })
 
