@@ -13,13 +13,32 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     imageoptim: {
-      files: [],
+      files: ['~/Desktop/img'],
       options: {
-        jpegMini: false,
-        imageAlpha: false,
-        quitAfter: false
+        jpegMini: true,
+        imageAlpha: true,
+        quitAfter: true
       }
     }
+
+    // imageoptim: {
+    //   someTask: {
+    //     files: ['~/Desktop/img'],
+    //     options: {
+    //       jpegMini: true,
+    //       imageAlpha: true,
+    //       quitAfter: true
+    //     }
+    //   },
+    //   otherTask: {
+    //     files: ['~/Desktop/img'],
+    //     options: {
+    //       jpegMini: false,
+    //       imageAlpha: false,
+    //       quitAfter: true
+    //     }
+    //   }
+    // }
 
   });
 
