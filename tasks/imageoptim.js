@@ -37,7 +37,9 @@ module.exports = function(grunt) {
   var taskDescription = 'Losslessly compress images from the command line';
 
   function fileExists(filePath) {
+
     var deferred = q.defer();
+
     fs.exists(filePath, function(canLocate) {
       if (canLocate) {
         deferred.resolve(true);
@@ -45,25 +47,35 @@ module.exports = function(grunt) {
         deferred.reject(new Error('"' + filePath + '" does not exist'));
       }
     });
+
     return deferred.promise;
+
   }
 
-  grunt.registerMultiTask(taskName, taskDescription, function() {
+  function processItem(files, opts, done) {
+
+    if (false === 'jpegMini' in opts) {
+      opts.jpegMini = false;
+    }
+
+    if (false === 'imageAlpha' in opts) {
+      opts.imageAlpha = false;
+    }
+
+    if (false === 'quitAfter' in opts) {
+      opts.quitAfter = false;
+    }
 
     q({
-      done: this.async(),
+      done: done,
       commands: [],
-      directories: this.data,
+      directories: files,
       bin: [
         path.resolve(__dirname, '../node_modules/imageoptim-cli/bin'),
         path.resolve(__dirname, '../../imageoptim-cli/bin')
       ],
       exec: q.denodeify(require('child_process').exec),
-      options: this.options({
-        jpegMini: false,
-        imageAlpha: false,
-        quitAfter: false
-      })
+      options: opts
     })
 
     .then(function(config) {
@@ -174,6 +186,37 @@ module.exports = function(grunt) {
     // here something failed, so we let Grunt render our errors to the console
 
     .done();
+
+  }
+
+  grunt.registerTask(taskName, taskDescription, function() {
+
+    var done = this.async();
+    var config = grunt.config.data.imageoptim;
+    var taskNames = Object.keys(config);
+
+    if ('files' in config) {
+      processItem(config.files, config.options || {}, done);
+      return;
+    }
+
+    function nextTask() {
+
+      var taskName = taskNames.shift();
+      var task;
+
+      if (!taskName) {
+        done();
+        return;
+      }
+
+      grunt.log.writeln('  "imageoptim:' + taskName + '"');
+      task = config[taskName];
+      processItem(task.files, task.options || config.options || {}, nextTask);
+
+    }
+
+    nextTask();
 
   });
 
