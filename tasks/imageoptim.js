@@ -68,13 +68,14 @@ module.exports = function(grunt) {
 
     q({
       done: done,
+      commandOptions: {},
       commands: [],
       directories: files,
       bin: [
         path.resolve(__dirname, '../node_modules/imageoptim-cli/bin'),
         path.resolve(__dirname, '../../imageoptim-cli/bin')
       ],
-      exec: q.denodeify(require('child_process').exec),
+      exec: require('child_process').exec,
       options: opts
     })
 
@@ -119,7 +120,8 @@ module.exports = function(grunt) {
             if (statObject.isDirectory()) {
               return;
             }
-            error += 'Psssst! ImageOptim-CLI uses folders.\n';
+            error += 'Psssst! ImageOptim-CLI supports processing custom batches of files, but ';
+            error += 'grunt-imageoptim currently only supports folders.\n';
             error += 'Pass the folder containing "' + config.directories[i] + '"';
             error += ' instead and we should be good to go.';
             throw new Error(error);
@@ -131,20 +133,23 @@ module.exports = function(grunt) {
     // ensure the ImageOptim-CLI binary is accessible
 
     .then(function(config) {
-      return fileExists(config.bin[0])
+      var childBin = config.bin[0];
+      var siblingBin = config.bin[1];
+      return fileExists(childBin)
         .then(function() {
-          config.bin = config.bin[0];
+          config.bin = childBin;
           return config;
         })
         .fail(function() {
-          return fileExists(config.bin[1])
+          return fileExists(siblingBin)
             .then(function() {
-              config.bin = config.bin[1];
+              config.bin = siblingBin;
               return config;
             })
             .fail(function() {
               var error = '';
-              error += 'Unable to locate ImageOptim-CLI in "' + config.bin[0] + '" or "' + config.bin[1] + '".\n';
+              error += 'Unable to locate ImageOptim-CLI in ';
+              error += '"' + childBin + '" or "' + siblingBin + '".\n';
               error += 'Please raise issue: https://github.com/JamieMason/grunt-imageoptim/issues/new.';
               throw new Error(error);
             });
@@ -162,6 +167,7 @@ module.exports = function(grunt) {
         command += options.jpegMini ? ' --jpeg-mini' : '';
         return command + ' --directory ' + directory.replace(/\s/g, '\\ ');
       });
+      config.commandOptions.cwd = config.bin;
       return config;
     })
 
@@ -169,9 +175,21 @@ module.exports = function(grunt) {
 
     .then(function(config) {
       return q.all(config.commands.map(function(command) {
-        return config.exec(command, {
-          cwd: config.bin
+
+        var deferred = q.defer();
+        var imageOptimCli = config.exec(command, config.commandOptions);
+
+        imageOptimCli.stdout.on('data', function(message) {
+          message = message || '';
+          console.log(message.replace(/\n+$/, ''));
         });
+
+        imageOptimCli.on('exit', function(code) {
+          return code === 0 ? deferred.resolve(config) : deferred.reject(new Error());
+        });
+
+        return deferred.promise;
+
       })).then(function() {
         return config;
       });
