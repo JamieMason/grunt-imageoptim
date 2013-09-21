@@ -174,25 +174,36 @@ module.exports = function(grunt) {
     // run our terminal commands
 
     .then(function(config) {
-      return q.all(config.commands.map(function(command) {
 
-        var deferred = q.defer();
-        var imageOptimCli = config.exec(command, config.commandOptions);
+      // we have to run each task serially
+      var allTasks = config.commands.reduce(function(promise, command) {
 
-        imageOptimCli.stdout.on('data', function(message) {
-          message = message || '';
-          console.log(message.replace(/\n+$/, ''));
+        return promise.then(function() {
+
+          var deferred = q.defer();
+          var imageOptimCli = config.exec(command, config.commandOptions);
+
+          // surface all console output from ImageOptim-CLI
+          imageOptimCli.stdout.on('data', function(message) {
+            message = message || '';
+            console.log(message.replace(/\n+$/, ''));
+          });
+
+          // surface ImageOptim-CLI's success/fail status
+          imageOptimCli.on('exit', function(code) {
+            return code === 0 ? deferred.resolve(config) : deferred.reject(new Error());
+          });
+
+          return deferred.promise;
+
         });
 
-        imageOptimCli.on('exit', function(code) {
-          return code === 0 ? deferred.resolve(config) : deferred.reject(new Error());
-        });
+      }, q(config));
 
-        return deferred.promise;
-
-      })).then(function() {
+      return allTasks.then(function() {
         return config;
       });
+
     })
 
     // here everything worked out and we can tell Grunt we're done
