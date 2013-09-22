@@ -26,7 +26,7 @@ A local copy of [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/) wi
 
 As with all Grunt plugins, grunt-imageoptim is configured using a Gruntfile.js  in the root of your project.
 
-Grunt provide a short [walkthrough of a sample Gruntfile](http://gruntjs.com/sample-gruntfile) which explains they work, but the general structure is this;
+Grunt provide a short [walkthrough of a sample Gruntfile](http://gruntjs.com/sample-gruntfile) which explains how they work, but the general structure is this;
 
 ```javascript
 module.exports = function(grunt) {
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
 
 ## Configuration examples
 
-## Use defaults
+### Use defaults
 
 Here we want to optimise two directories using default options.
 
@@ -51,7 +51,7 @@ imageoptim: {
 }
 ```
 
-## Override defaults
+### Override defaults
 
 Here we want to optimise two directories using only ImageAlpha and ImageOptim, then close them once we're done.
 
@@ -68,9 +68,9 @@ imageoptim: {
 }
 ```
 
-## Custom options for each task
+### Custom options for each task
 
-Here we have a task for a folder of PNGs and another of JPGs. Since we use ImageAlpha to optimise PNGs but not JPGs and vice versa with JPEGmini, here we toggle their availability between the two tasks.
+Here we have a task for a folder of PNGs and another for JPGs. Since we use ImageAlpha to optimise PNGs but not JPGs and vice versa with JPEGmini, here we toggle their availability between the two tasks.
 
 ```javascript
 imageoptim: {
@@ -93,7 +93,7 @@ imageoptim: {
 }
 ```
 
-## Option inheritance
+### Option inheritance
 
 This example is equivalent to the _custom options for each task_ example, except we're setting some base options then overriding those we want to change within each task.
 
