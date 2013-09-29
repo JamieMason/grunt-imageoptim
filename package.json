@@ -1,8 +1,8 @@
 {
   "name": "grunt-imageoptim",
-  "description": "Automate ImageOptim, ImageAlpha, and JPEGmini",
+  "description": "Automates ImageOptim, ImageAlpha, and JPEGmini for Mac to make batch optimisation of images part of your automated build process",
   "homepage": "https://github.com/JamieMason/grunt-imageoptim",
-  "version": "1.3.13",
+  "version": "1.2.12",
   "main": "Gruntfile.js",
   "author": {
     "name": "Jamie Mason @GotNoSugarBaby",
