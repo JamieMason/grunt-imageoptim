@@ -42,6 +42,36 @@ module.exports = function(grunt) {
     return path.resolve(__dirname, dir);
   });
 
+  (function() {
+    var config = grunt.config.data.imageoptim;
+    var tasks = config ? [config] : [];
+    var hasDeprecatedConfig = false;
+    var error = '';
+
+    Object.keys(config).forEach(function(key) {
+      var value = config[key];
+      var isObject = value && typeof value === 'object';
+      var isTask = isObject && key !== 'options' && key !== 'files';
+      if (isTask) {
+        tasks.push(value);
+      }
+    });
+
+    hasDeprecatedConfig = tasks.some(function(task) {
+      return 'files' in task && task.files.some(function(member) {
+        return typeof member === 'string';
+      });
+    });
+
+    if (hasDeprecatedConfig) {
+      error += 'The current grunt-imageoptim configuration format was deprecated to allow us to ';
+      error += 'add full support for file pattern matching.\n';
+      error += 'In most cases, all this means is renaming the "files" property to "src" but ';
+      error += 'updated examples can be found at https://github.com/JamieMason/grunt-imageoptim.';
+      grunt.fail.fatal(error);
+    }
+  }());
+
   /**
    * Get the ImageOptim-CLI Terminal command to be run for a given directory and task options
    * @param  {String} directory
