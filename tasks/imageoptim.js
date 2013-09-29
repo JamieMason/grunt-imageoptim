@@ -31,7 +31,10 @@ module.exports = function(grunt) {
 
   var q = require('q');
   var path = require('path');
-  var exec = require('child_process').exec;
+  var childProcess = require('child_process');
+  var exec = childProcess.exec;
+  var spawn = childProcess.spawn;
+  var gruntFile = path.resolve();
   var taskName = 'imageoptim';
   var issuesPage = 'https://github.com/JamieMason/grunt-imageoptim/issues/new';
   var taskDescription = 'Losslessly compress images from the command line';
@@ -43,7 +46,7 @@ module.exports = function(grunt) {
   });
 
   (function() {
-    var config = grunt.config.data.imageoptim;
+    var config = grunt.config.data.imageoptim || {};
     var tasks = config ? [config] : [];
     var hasDeprecatedConfig = false;
     var error = '';
@@ -102,7 +105,7 @@ module.exports = function(grunt) {
     });
 
     imageOptimCli.stdout.on('data', function(message) {
-      console.log((message || '').replace(/\n+$/, ''));
+      console.log(String(message || '').replace(/\n+$/, ''));
     });
 
     imageOptimCli.on('exit', function(code) {
@@ -114,7 +117,7 @@ module.exports = function(grunt) {
   }
 
   /**
-   * @param  {String[]}  files             Array of paths to directories from files: in config.
+   * @param  {String[]}  files             Array of paths to directories from src: in config.
    * @param  {Boolean}   opts.jpegMini     Whether to run JPEGmini.app.
    * @param  {Boolean}   opts.imageAlpha   Whether to run ImageAlpha.app.
    * @param  {Boolean}   opts.quitAfter    Whether to quit apps after running.
@@ -129,6 +132,50 @@ module.exports = function(grunt) {
         return executeDirectoryCommand(command, opts.cliPath);
       });
     }, q());
+  }
+
+  /**
+   * @param  {String[]}  files             Array of paths to files from src: in config.
+   * @param  {Boolean}   opts.jpegMini     Whether to run JPEGmini.app.
+   * @param  {Boolean}   opts.imageAlpha   Whether to run ImageAlpha.app.
+   * @param  {Boolean}   opts.quitAfter    Whether to quit apps after running.
+   * @return {Promise}
+   */
+
+  function processFiles(files, opts) {
+
+    var imageOptimCli;
+    var cliOptions = [];
+    var deferred = q.defer();
+    var errorMessage = 'ImageOptim-CLI exited with a failure status';
+
+    if (opts.quitAfter) {
+      cliOptions.push('--quit');
+    }
+    if (opts.imageAlpha) {
+      cliOptions.push('--image-alpha');
+    }
+    if (opts.jpegMini) {
+      cliOptions.push('--jpeg-mini');
+    }
+
+    imageOptimCli = spawn('./imageOptim', cliOptions, {
+      cwd: opts.cliPath
+    });
+
+    imageOptimCli.stdout.on('data', function(message) {
+      console.log(String(message || '').replace(/\n+$/, ''));
+    });
+
+    imageOptimCli.on('exit', function(code) {
+      return code === 0 ? deferred.resolve(true) : deferred.reject(new Error(errorMessage));
+    });
+
+    imageOptimCli.stdin.setEncoding('utf8');
+    imageOptimCli.stdin.end(files.join('\n'));
+
+    return deferred.promise;
+
   }
 
   /**
@@ -163,6 +210,10 @@ module.exports = function(grunt) {
     })[0];
   }
 
+  function toAbsolute(relativePath) {
+    return path.resolve(gruntFile, relativePath);
+  }
+
   grunt.registerMultiTask(taskName, taskDescription, function() {
 
     var task = this;
@@ -180,12 +231,23 @@ module.exports = function(grunt) {
     }
 
     task.files.forEach(function(file) {
-      var directories = file.src.filter(isFileType('dir'));
+      var directories = file.src.filter(isFileType('dir')).map(toAbsolute);
+      var files = file.src.filter(isFileType('file')).map(toAbsolute);
       if (directories.length > 0) {
         promise = promise.then(function() {
           return processDirectories(directories, {
             cliPath: cliPath,
             jpegMini: options.jpegMini,
+            imageAlpha: options.imageAlpha,
+            quitAfter: options.quitAfter
+          });
+        });
+      }
+      if (files.length > 0) {
+        promise = promise.then(function() {
+          return processFiles(files, {
+            cliPath: cliPath,
+            jpegMini: false, // options.jpegMini,
             imageAlpha: options.imageAlpha,
             quitAfter: options.quitAfter
           });
