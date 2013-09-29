@@ -11,19 +11,28 @@ module.exports = function(grunt) {
   'use strict';
 
   grunt.initConfig({
-
-    imageoptim: {
-      files: ['~/Desktop/img'],
+    jshint: {
       options: {
-        jpegMini: true,
-        imageAlpha: true,
-        quitAfter: true
+        jshintrc: '.jshintrc'
+      },
+      files: {
+        src: ['tasks/**/*.js']
       }
-    }
-
+    },
     // imageoptim: {
+    //   options: {
+    //     jpegMini: false,
+    //     imageAlpha: false,
+    //     quitAfter: false
+    //   },
     //   someTask: {
-    //     files: ['~/Desktop/img'],
+    //     files: [
+    //       '/Users/jdog/Desktop/img',
+    //       '/Users/jdog/Desktop/img/*.jpg',
+    //       '/Users/jdog/Desktop/img/NOT_FOUND.tiff',
+    //       '/Users/jdog/Desktop/img/*.png',
+    //       '/Users/jdog/Desktop/img/*.gif'
+    //     ],
     //     options: {
     //       jpegMini: true,
     //       imageAlpha: true,
@@ -31,7 +40,9 @@ module.exports = function(grunt) {
     //     }
     //   },
     //   otherTask: {
-    //     files: ['~/Desktop/img'],
+    //     src: [
+    //       '/Users/jdog/Desktop/img2'
+    //     ],
     //     options: {
     //       jpegMini: false,
     //       imageAlpha: false,
@@ -39,9 +50,9 @@ module.exports = function(grunt) {
     //     }
     //   }
     // }
-
   });
 
   grunt.loadTasks('tasks');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
 };
