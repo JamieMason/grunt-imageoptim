@@ -2,8 +2,6 @@
 
 The companion [Grunt](http://gruntjs.com/) plugin for [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/), which automates batch optimisation of images with [ImageOptim](http://imageoptim.com), [ImageAlpha](http://pngmini.com) and [JPEGmini for Mac](http://jpegmini.com/mac).
 
-Please note that although [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/) supports optimisation of arbitrary collections of files, grunt-imageoptim currently only supports processing whole directories of images.
-
 ## Installation
 
 From the root of your project, run
@@ -20,7 +18,7 @@ Since this project automates three Mac Applications, you will need them to be in
 + [ImageAlpha](http://pngmini.com)
 + [JPEGmini for Mac](https://itunes.apple.com/us/app/jpegmini/id498944723) (App Store)
 
-A local copy of [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/) will be installed, you won't need to install that separately. 
+A local copy of [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/) will be installed, you won't need to install that separately.
 
 ## Gruntfile.js
 
@@ -46,7 +44,7 @@ Here we want to optimise two directories using default options.
 ```javascript
 imageoptim: {
   myTask: {
-    files: ['www/images', 'css/images']
+    src: ['www/images', 'css/images']
   }
 }
 ```
@@ -63,7 +61,7 @@ imageoptim: {
       imageAlpha: true,
       quitAfter: true
     },
-    files: ['www/images', 'css/images']
+    src: ['www/images', 'css/images']
   }
 }
 ```
@@ -80,7 +78,7 @@ imageoptim: {
       imageAlpha: true,
       quitAfter: true
     },
-    files: ['img/png']
+    src: ['img/png']
   },
   myJpgs: {
     options: {
@@ -88,7 +86,7 @@ imageoptim: {
       imageAlpha: false,
       quitAfter: true
     },
-    files: ['img/jpg']
+    src: ['img/jpg']
   }
 }
 ```
@@ -107,14 +105,14 @@ imageoptim: {
       imageAlpha: true,
       jpegMini: false
     },
-    files: ['img/png']
+    src: ['img/png']
   },
   allJpgs: {
     options: {
       imageAlpha: false,
       jpegMini: true
     },
-    files: ['img/jpg']
+    src: ['img/jpg']
   }
 }
 ```

@@ -11,37 +11,17 @@ module.exports = function(grunt) {
   'use strict';
 
   grunt.initConfig({
-
-    imageoptim: {
-      files: ['~/Desktop/img'],
+    jshint: {
       options: {
-        jpegMini: true,
-        imageAlpha: true,
-        quitAfter: true
+        jshintrc: '.jshintrc'
+      },
+      files: {
+        src: ['tasks/**/*.js']
       }
     }
-
-    // imageoptim: {
-    //   someTask: {
-    //     files: ['~/Desktop/img'],
-    //     options: {
-    //       jpegMini: true,
-    //       imageAlpha: true,
-    //       quitAfter: true
-    //     }
-    //   },
-    //   otherTask: {
-    //     files: ['~/Desktop/img'],
-    //     options: {
-    //       jpegMini: false,
-    //       imageAlpha: false,
-    //       quitAfter: true
-    //     }
-    //   }
-    // }
-
   });
 
   grunt.loadTasks('tasks');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
 };
