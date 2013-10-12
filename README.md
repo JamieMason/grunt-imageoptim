@@ -2,8 +2,6 @@
 
 The companion [Grunt](http://gruntjs.com/) plugin for [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/), which automates batch optimisation of images with [ImageOptim](http://imageoptim.com), [ImageAlpha](http://pngmini.com) and [JPEGmini for Mac](http://jpegmini.com/mac).
 
-Please note that although [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/) supports optimisation of arbitrary collections of files, grunt-imageoptim currently only supports processing whole directories of images.
-
 ## Installation
 
 From the root of your project, run
