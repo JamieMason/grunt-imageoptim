@@ -67,9 +67,11 @@ module.exports = function(grunt) {
     });
 
     if (hasDeprecatedConfig) {
-      error += 'The current grunt-imageoptim configuration format was deprecated to allow us to ';
-      error += 'add full support for file pattern matching.\n';
-      error += 'In most cases, all this means is renaming the "files" property to "src" but ';
+      error += '\n';
+      error += 'grunt-imageoptim 1.4.0 brought a change to it\'s configuration to bring full ';
+      error += 'support for Grunt\'s file pattern matching.';
+      error += '\n';
+      error += 'In most cases all this means is renaming the "files" property to "src", but ';
       error += 'updated examples can be found at https://github.com/JamieMason/grunt-imageoptim.';
       grunt.fail.fatal(error);
     }
