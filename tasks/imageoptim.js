@@ -135,6 +135,26 @@ module.exports = function(grunt) {
   }
 
   /**
+   * include necessary command line flags based on the current task's options
+   * @param  {Object} opts
+   * @return {Array}
+   */
+
+  function getCliFlags(opts) {
+    var cliOptions = [];
+    if (opts.quitAfter) {
+      cliOptions.push('--quit');
+    }
+    if (opts.imageAlpha) {
+      cliOptions.push('--image-alpha');
+    }
+    if (opts.jpegMini) {
+      cliOptions.push('--jpeg-mini');
+    }
+    return cliOptions;
+  }
+
+  /**
    * @param  {String[]}  files             Array of paths to files from src: in config.
    * @param  {Boolean}   opts.jpegMini     Whether to run JPEGmini.app.
    * @param  {Boolean}   opts.imageAlpha   Whether to run ImageAlpha.app.
@@ -145,21 +165,10 @@ module.exports = function(grunt) {
   function processFiles(files, opts) {
 
     var imageOptimCli;
-    var cliOptions = [];
     var deferred = q.defer();
     var errorMessage = 'ImageOptim-CLI exited with a failure status';
 
-    if (opts.quitAfter) {
-      cliOptions.push('--quit');
-    }
-    if (opts.imageAlpha) {
-      cliOptions.push('--image-alpha');
-    }
-    if (opts.jpegMini) {
-      cliOptions.push('--jpeg-mini');
-    }
-
-    imageOptimCli = spawn('./imageOptim', cliOptions, {
+    imageOptimCli = spawn('./imageOptim', getCliFlags(opts), {
       cwd: opts.cliPath
     });
 
