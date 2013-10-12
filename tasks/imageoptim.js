@@ -219,8 +219,38 @@ module.exports = function(grunt) {
     })[0];
   }
 
+  /**
+   * Convert a relative path to an absolute file system path
+   * @param  {String} relativePath
+   * @return {String}
+   */
+
   function toAbsolute(relativePath) {
     return path.resolve(gruntFile, relativePath);
+  }
+
+  /**
+   * Given a collection of files to be run in a task, seperate the files from the directories to
+   * handle them in their own way.
+   * @param  {String} fileType "dir" or "file"
+   * @param  {String} cliPath
+   * @param  {Object} options
+   * @param  {Array} taskFiles
+   * @param  {Promise} promise
+   * @return {Promise}
+   */
+
+  function processBatch(fileType, cliPath, options, taskFiles, promise) {
+    var files = taskFiles.filter(isFileType(fileType)).map(toAbsolute);
+    var processor = fileType === 'dir' ? processDirectories : processFiles;
+    return files.length === 0 ? promise : promise.then(function() {
+      return processor(files, {
+        cliPath: cliPath,
+        jpegMini: options.jpegMini,
+        imageAlpha: options.imageAlpha,
+        quitAfter: options.quitAfter
+      });
+    });
   }
 
   grunt.registerMultiTask(taskName, taskDescription, function() {
@@ -240,28 +270,8 @@ module.exports = function(grunt) {
     }
 
     task.files.forEach(function(file) {
-      var directories = file.src.filter(isFileType('dir')).map(toAbsolute);
-      var files = file.src.filter(isFileType('file')).map(toAbsolute);
-      if (directories.length > 0) {
-        promise = promise.then(function() {
-          return processDirectories(directories, {
-            cliPath: cliPath,
-            jpegMini: options.jpegMini,
-            imageAlpha: options.imageAlpha,
-            quitAfter: options.quitAfter
-          });
-        });
-      }
-      if (files.length > 0) {
-        promise = promise.then(function() {
-          return processFiles(files, {
-            cliPath: cliPath,
-            jpegMini: false, // options.jpegMini,
-            imageAlpha: options.imageAlpha,
-            quitAfter: options.quitAfter
-          });
-        });
-      }
+      promise = processBatch('file', cliPath, options, file.src, promise);
+      promise = processBatch('dir', cliPath, options, file.src, promise);
     });
 
     promise.done(done);
