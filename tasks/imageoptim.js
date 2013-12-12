@@ -183,7 +183,7 @@ module.exports = function(grunt) {
     });
 
     imageOptimCli.stdin.setEncoding('utf8');
-    imageOptimCli.stdin.end(files.join('\n'));
+    imageOptimCli.stdin.end(files.join('\n') + '\n');
 
     return deferred.promise;
 
