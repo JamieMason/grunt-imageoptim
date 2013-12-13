@@ -1,7 +1,7 @@
 /*
  * grunt-imageoptim
  * https://github.com/JamieMason/grunt-imageoptim
- * Copyright © 2013 Jamie Mason, @GotNoSugarBaby,
+ * Copyright © 2013 Jamie Mason, @fold_left,
  * https://github.com/JamieMason
  *
  * Permission is hereby granted, free of charge, to any person
