@@ -2,7 +2,7 @@
   "name": "grunt-imageoptim",
   "description": "Automate ImageOptim, ImageAlpha, and JPEGmini",
   "homepage": "http://jamiemason.github.io/ImageOptim-CLI",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "Gruntfile.js",
   "author": {
     "name": "Jamie Mason @fold_left",
