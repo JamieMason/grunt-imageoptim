@@ -1,5 +1,7 @@
 # grunt-imageoptim
 
+[![Analytics](https://ga-beacon.appspot.com/UA-45466560-5/grunt-imageoptim?flat&useReferer)](https://github.com/igrigorik/ga-beacon)
+
 The companion [Grunt](http://gruntjs.com/) plugin for [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/), which automates batch optimisation of images with [ImageOptim](http://imageoptim.com), [ImageAlpha](http://pngmini.com) and [JPEGmini for Mac](http://jpegmini.com/mac).
 
 ## Installation
