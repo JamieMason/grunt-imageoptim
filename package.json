@@ -1,46 +1,31 @@
 {
   "name": "grunt-imageoptim",
   "description": "Automate ImageOptim, ImageAlpha, and JPEGmini",
-  "homepage": "http://jamiemason.github.io/ImageOptim-CLI",
   "version": "1.4.1",
-  "main": "Gruntfile.js",
-  "author": {
-    "name": "Jamie Mason @fold_left",
-    "email": "siunmaru@gmail.com",
-    "url": "https://github.com/JamieMason"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:JamieMason/grunt-imageoptim.git"
-  },
+  "author": "Jamie Mason (https://github.com/JamieMason)",
   "bugs": {
     "url": "https://github.com/JamieMason/grunt-imageoptim/issues"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "https://github.com/JamieMason/grunt-imageoptim/blob/master/LICENSE-MIT"
-  }],
-  "engines": {
-    "node": ">= 0.8.0"
-  },
+  "contributors": [
+    "Jamie Mason (https://github.com/JamieMason)",
+    "David Bushell (https://github.com/dbushell)",
+    "Adam Simpson ((https://github.com/asimpson)"
+  ],
   "dependencies": {
-    "imageoptim-cli": ">=1.14.8",
-    "q": "1.4.1",
-    "grunt-contrib-jshint": "~1.1.0"
+    "imageoptim-cli": "1.14.8",
+    "q": "1.4.1"
   },
-  "peerDependencies": {
-    "grunt": "~0.4.1"
-  },
+  "homepage": "https://github.com/JamieMason/grunt-imageoptim",
   "keywords": [
+    "ImageOptim",
+    "JPEGmini",
     "advpng",
     "build",
     "compress",
     "compression",
     "gifsicle",
     "gruntplugin",
-    "ImageOptim",
     "images",
-    "JPEGmini",
     "jpegoptim",
     "jpegtran",
     "optimization",
@@ -49,9 +34,7 @@
     "pngcrush",
     "pngout"
   ],
-  "contributors": [
-    "Jamie Mason (https://github.com/JamieMason)",
-    "David Bushell (https://github.com/dbushell)",
-    "Adam Simpson ((https://github.com/asimpson)"
-  ]
+  "license": "MIT",
+  "main": "tasks/imageoptim.js",
+  "repository": "JamieMason/grunt-imageoptim"
 }
