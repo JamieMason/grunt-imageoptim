@@ -1,5 +1,8 @@
 # grunt-imageoptim
 
+[![NPM version](http://img.shields.io/npm/v/grunt-imageoptim.svg?style=flat-square)](https://www.npmjs.com/package/grunt-imageoptim)
+[![NPM downloads](http://img.shields.io/npm/dm/grunt-imageoptim.svg?style=flat-square)](https://www.npmjs.com/package/grunt-imageoptim)
+[![Dependency Status](http://img.shields.io/david/JamieMason/grunt-imageoptim.svg?style=flat-square)](https://david-dm.org/JamieMason/grunt-imageoptim)
 [![Analytics](https://ga-beacon.appspot.com/UA-45466560-5/grunt-imageoptim?flat&useReferer)](https://github.com/igrigorik/ga-beacon)
 
 The companion [Grunt](http://gruntjs.com/) plugin for [ImageOptim-CLI](http://jamiemason.github.io/ImageOptim-CLI/), which automates batch optimisation of images with [ImageOptim](http://imageoptim.com), [ImageAlpha](http://pngmini.com) and [JPEGmini for Mac](http://jpegmini.com/mac).
