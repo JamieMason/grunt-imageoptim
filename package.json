@@ -15,6 +15,9 @@
     "imageoptim-cli": "1.14.8",
     "q": "1.4.1"
   },
+  "devDependencies": {
+    "xo": "0.17.1"
+  },
   "homepage": "https://github.com/JamieMason/grunt-imageoptim",
   "keywords": [
     "ImageOptim",
@@ -36,5 +39,15 @@
   ],
   "license": "MIT",
   "main": "tasks/imageoptim.js",
-  "repository": "JamieMason/grunt-imageoptim"
+  "repository": "JamieMason/grunt-imageoptim",
+  "scripts": {
+    "lint": "xo --fix"
+  },
+  "xo": {
+    "envs": [
+      "node"
+    ],
+    "esnext": false,
+    "space": 2
+  }
 }

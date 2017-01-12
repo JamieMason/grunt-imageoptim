@@ -25,8 +25,7 @@
  * SOFTWARE.
  */
 
-module.exports = function(grunt) {
-
+module.exports = function (grunt) {
   'use strict';
 
   var q = require('q');
@@ -41,17 +40,17 @@ module.exports = function(grunt) {
   var cliPaths = [
     '../node_modules/imageoptim-cli/bin',
     '../../imageoptim-cli/bin'
-  ].map(function(dir) {
+  ].map(function (dir) {
     return path.resolve(__dirname, dir);
   });
 
-  (function() {
+  (function () {
     var config = grunt.config.data.imageoptim || {};
     var tasks = config ? [config] : [];
     var hasDeprecatedConfig = false;
     var error = '';
 
-    Object.keys(config).forEach(function(key) {
+    Object.keys(config).forEach(function (key) {
       var value = config[key];
       var isObject = value && typeof value === 'object';
       var isTask = isObject && key !== 'options' && key !== 'files';
@@ -60,8 +59,8 @@ module.exports = function(grunt) {
       }
     });
 
-    hasDeprecatedConfig = tasks.some(function(task) {
-      return 'files' in task && task.files.some(function(member) {
+    hasDeprecatedConfig = tasks.some(function (task) {
+      return 'files' in task && task.files.some(function (member) {
         return typeof member === 'string';
       });
     });
@@ -75,7 +74,7 @@ module.exports = function(grunt) {
       error += 'updated examples can be found at https://github.com/JamieMason/grunt-imageoptim.';
       grunt.fail.fatal(error);
     }
-  }());
+  })();
 
   /**
    * Get the ImageOptim-CLI Terminal command to be run for a given directory and task options
@@ -99,23 +98,21 @@ module.exports = function(grunt) {
    */
 
   function executeDirectoryCommand(command, cwd) {
-
     var deferred = q.defer();
     var errorMessage = 'ImageOptim-CLI exited with a failure status';
     var imageOptimCli = exec(command, {
       cwd: cwd
     });
 
-    imageOptimCli.stdout.on('data', function(message) {
+    imageOptimCli.stdout.on('data', function (message) {
       console.log(String(message || '').replace(/\n+$/, ''));
     });
 
-    imageOptimCli.on('exit', function(code) {
+    imageOptimCli.on('exit', function (code) {
       return code === 0 ? deferred.resolve(true) : deferred.reject(new Error(errorMessage));
     });
 
     return deferred.promise;
-
   }
 
   /**
@@ -127,10 +124,10 @@ module.exports = function(grunt) {
    */
 
   function processDirectories(files, opts) {
-    return files.map(function(directory) {
+    return files.map(function (directory) {
       return getCommandByDirectory(directory, opts);
-    }).reduce(function(promise, command) {
-      return promise.then(function() {
+    }).reduce(function (promise, command) {
+      return promise.then(function () {
         return executeDirectoryCommand(command, opts.cliPath);
       });
     }, q());
@@ -165,7 +162,6 @@ module.exports = function(grunt) {
    */
 
   function processFiles(files, opts) {
-
     var imageOptimCli;
     var deferred = q.defer();
     var errorMessage = 'ImageOptim-CLI exited with a failure status';
@@ -174,11 +170,11 @@ module.exports = function(grunt) {
       cwd: opts.cliPath
     });
 
-    imageOptimCli.stdout.on('data', function(message) {
+    imageOptimCli.stdout.on('data', function (message) {
       console.log(String(message || '').replace(/\n+$/, ''));
     });
 
-    imageOptimCli.on('exit', function(code) {
+    imageOptimCli.on('exit', function (code) {
       return code === 0 ? deferred.resolve(true) : deferred.reject(new Error(errorMessage));
     });
 
@@ -186,7 +182,6 @@ module.exports = function(grunt) {
     imageOptimCli.stdin.end(files.join('\n') + '\n');
 
     return deferred.promise;
-
   }
 
   /**
@@ -205,7 +200,7 @@ module.exports = function(grunt) {
 
   function isFileType(fileType) {
     var methodName = 'is' + firstUp(fileType);
-    return function(file) {
+    return function (file) {
       return grunt.file[methodName](file);
     };
   }
@@ -216,7 +211,7 @@ module.exports = function(grunt) {
    */
 
   function getPathToCli() {
-    return cliPaths.filter(function(cliPath) {
+    return cliPaths.filter(function (cliPath) {
       return grunt.file.exists(cliPath);
     })[0];
   }
@@ -245,7 +240,7 @@ module.exports = function(grunt) {
   function processBatch(fileType, cliPath, options, taskFiles, promise) {
     var files = taskFiles.filter(isFileType(fileType)).map(toAbsolute);
     var processor = fileType === 'dir' ? processDirectories : processFiles;
-    return files.length === 0 ? promise : promise.then(function() {
+    return files.length === 0 ? promise : promise.then(function () {
       return processor(files, {
         cliPath: cliPath,
         jpegMini: options.jpegMini,
@@ -255,8 +250,7 @@ module.exports = function(grunt) {
     });
   }
 
-  grunt.registerMultiTask(taskName, taskDescription, function() {
-
+  grunt.registerMultiTask(taskName, taskDescription, function () {
     var task = this;
     var done = task.async();
     var promise = q();
@@ -271,13 +265,11 @@ module.exports = function(grunt) {
       throw new Error('Unable to locate ImageOptim-CLI. Please raise issue at ' + issuesPage);
     }
 
-    task.files.forEach(function(file) {
+    task.files.forEach(function (file) {
       promise = processBatch('file', cliPath, options, file.src, promise);
       promise = processBatch('dir', cliPath, options, file.src, promise);
     });
 
     promise.done(done);
-
   });
-
 };
