@@ -1,0 +1,16 @@
+{
+  "name": "grunt-imageoptim-example",
+  "description": "An example project using grunt-imageoptim",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "Gruntfile.js",
+  "private": true,
+  "devDependencies": {
+    "grunt": "1.0.1",
+    "grunt-cli": "1.2.0",
+    "grunt-imageoptim": ".."
+  },
+  "scripts": {
+    "optimise-images": "grunt imageoptim"
+  }
+}
