@@ -12,7 +12,7 @@
     "Adam Simpson ((https://github.com/asimpson)"
   ],
   "dependencies": {
-    "imageoptim-cli": "1.14.8",
+    "imageoptim-cli": "1.14.9",
     "q": "1.4.1"
   },
   "devDependencies": {
