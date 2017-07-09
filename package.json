@@ -12,11 +12,11 @@
     "Adam Simpson ((https://github.com/asimpson)"
   ],
   "dependencies": {
-    "imageoptim-cli": "1.14.9",
-    "q": "1.4.1"
+    "imageoptim-cli": "1.15.1",
+    "q": "1.5.0"
   },
   "devDependencies": {
-    "xo": "0.17.1"
+    "xo": "0.18.2"
   },
   "homepage": "https://github.com/JamieMason/grunt-imageoptim",
   "keywords": [
